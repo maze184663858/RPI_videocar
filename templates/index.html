@@ -1,0 +1,370 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>kiceng's wifi car</title>
+    <link rel="icon" href="../static/pi.png">
+    <!--<script type="text/javascript" src="{{ url_for('static', filename='jquery-1.11.2.min.js')}}"> </script> -->
+    <script type="text/javascript" src="../static/jquery-1.11.2.min.js"></script>
+    <!--CSS-->
+    <style>
+        body,
+        div,
+        ul,
+        ol {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            line-height: 1em;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: white;
+            color: black;
+            font-family: Consolas;
+            padding: 0;
+            margin: 0;
+            /*text-align: center;*/
+        }
+
+        #title {
+            color: white;
+            font-family: "Dubai Medium";
+            margin: 0px;
+            height: 80px;
+            text-align: center;
+            line-height: 80px;
+
+            background-color: #4CAF50;
+        }
+
+        .box {
+            background-color: #F6D6FF;
+            height: 850px;
+        }
+
+        .video {
+            margin-left: 20px;
+            width: 1000px;
+            {#height: 800px;#}
+        {#background-color: darkmagenta;#} display: inline;
+            float: left;
+            /*position: absolute;*/
+            
+        }
+
+        img {
+            display: inline-block
+            
+        }
+
+        .cgqdiv {
+            margin-top: 20px;
+            width: auto;
+            margin-left: 30px;
+        {#background-color: brown;#} display: inline;
+            float: left;
+            /*margin-left: 20px;*/
+            /*margin-top: 20px;*/
+
+        }
+
+        .temp {
+            width: 250px;
+            height: 80px;
+            color: white;
+            font-family: "Microsoft JhengHei Light";
+
+            background-color: mediumslateblue;
+            font-size: 18px;
+            text-align: center;
+            display: inline-block;
+            position: relative;
+            border-radius: 8px;
+
+        }
+
+        .hum {
+            position: relative;
+            margin-left: 30px;
+            font-size: 18px;
+            color: white;
+            font-family: "Microsoft JhengHei Light";
+
+            /* float: left; */
+            width: 250px;
+            height: 80px;
+            background-color: mediumslateblue;
+            display: inline-block;
+            text-align: center;
+            border-radius: 8px;
+
+        }
+
+        .temp i {
+            background: url(../static/t.png) no-repeat;
+
+        }
+
+        .hum i {
+            background: url(../static/s.png) no-repeat;
+        }
+
+        .temp i,
+        .hum i {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            top: 50%;
+            left: 15%;
+            background-size: 100% 100%;
+
+        }
+
+        p.cgq {
+        }
+
+        a.button {
+            /*text-align: center;*/
+            display: inline-block;
+            font: 20px Microsoft YaHei UI;
+            text-decoration: none;
+            background-color: #f44336;
+            color: white;
+            padding: 15px 32px;
+            border-radius: 8px;
+        {#border-top: 1px solid #CCCCCC;#}{#border-right: 1px solid #333333;#}{#border-bottom: 1px solid #333333;#}{#border-left: 1px solid #CCCCCC;#} display: inline-block;
+            margin-top: 50px;
+            margin-left: 220px;
+        }
+
+
+        #main {
+            background-color: #4CAF50;;
+            width: 300px;
+            height: 300px;
+
+
+            position: absolute;
+            margin-left: 1170px;
+            margin-top: 280px;
+
+            /*float: left;*/
+        {#display: inline-block;#}
+        }
+
+        .time {
+            color: #4CAF50;
+        }
+
+        #main span {
+            background-color: #F6D6FF;
+            width: 100px;
+            height: 100px;
+            float: left;
+            z-index: 999;
+        }
+
+
+        #main span.on2 {
+        {#background: darkgray;#} display: flex;
+            align-items: center;
+        }
+
+        #main span.on2 > img {
+            pointer-events: none;
+            width: 90%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .xiaohui {
+            width: 200px;
+            margin-top: 600px;
+            margin-left: -530px;
+        {#display: inline-block;#}{#position: absolute;#}
+
+        }
+
+        .xinxi {
+            position: absolute;
+            display: inline-block;
+            margin-left: 20px;
+            margin-top: 600px;
+            line-height: 20px;
+            font-family: Microsoft Yahei;
+            letter-spacing: 3px;
+        {#text-align: center;#}
+        }
+    </style>
+    <!--<link rel="stylesheet" href='../static/style.css'>-->
+</head>
+
+<body>
+
+<script type="text/javascript">
+    var clickingObj = [];
+
+    function go(k) {
+        $.post('/', {k: k}, function () {
+        });
+    }
+
+    $(function () {
+
+
+        window.document.onkeydown = downn;
+
+        function downn(env) {
+            env = (env) ? env : window.event;
+            if (env.keyCode == '87') {
+                go('w');
+            }
+            if (env.keyCode == '83') {
+                go('s');
+            }
+            if (env.keyCode == '65') {
+                go('a');
+            }
+            if (env.keyCode == '68') {
+                go('d');
+            }
+
+        }
+
+        window.document.onkeyup = function () {
+            go('x');
+        };
+
+        document.getElementById('main').addEventListener('mousedown', function (e) {
+            var dir = e.target.dataset.direction;
+            switch (dir) {
+                case 'w': {
+                    console.log('w pressed');
+                    /*go('w')*/
+                    break;
+                }
+                case 's': {
+                    console.log('s pressed');
+                    /*go('s')*/
+                    break;
+                }
+                case 'a': {
+                    console.log('a pressed');
+                    /*go('a')*/
+                    break;
+                }
+                case 'd': {
+                    console.log('d pressed');
+                    /*go('d')*/
+                    break;
+                }
+                default:
+                    return;
+            }
+            //if (status.clicking !== null) {
+            clickingObj.push(dir);
+
+            console.log(clickingObj);
+            //}
+
+
+        }, false);
+
+        document.body.addEventListener('mouseup', function (e) {
+            console.log(clickingObj[0] + ' up');
+            clickingObj.pop();
+            //go('x')
+        })
+
+
+        // var i = null;
+        // $('.before').mousedown(function(){
+        //     i = setInterval(function(){
+        //         go('w');
+        //     },100);
+        // });
+        // $('.left').mousedown(function(){
+        //     i = setInterval(function(){
+        //         go('a');
+        //     },100);
+        // });
+        // $('.right').mousedown(function(){
+        //     i = setInterval(function(){
+        //         go('d');
+        //     },100);
+        // });
+        // $('.cabk').mousedown(function(){
+        //     i = setInterval(function(){
+        //         go('s');
+        //     },100);
+        // });
+        // $('#main span').mouseup(function(){
+        //
+        //     window.clearInterval(i);
+
+        //  });
+
+
+    });
+</script>
+
+
+<!--HTML正文-->
+
+<h1 id="title">RasPi WiFi小车</h1>
+<div class="box">
+    <div class="video">
+        <p><img src="{{ url_for('video_feed') }}" width="100%"></p>
+        <!--<p>{{ time }}</p>-->
+    </div>
+
+
+    <div class="cgqdiv">
+
+        <div class="temp">
+            <p class="cgq"> 空气温度：</p>
+            <i></i>
+            <p> {{ temp }} °C</p>
+        </div>
+
+        <div class="hum">
+            <p class="cgq"> 空气湿度：</p>
+            <i></i>
+            <p> {{ hum }} %RH</p>
+        </div>
+
+        <div>
+            <a href="/" class="button">刷新</a>
+            <p class="time"> &nbsp; 最后读取时间: {{ time }} </p>
+        </div>
+    </div>
+
+
+    <div id="main">
+        <span></span>
+        <span class="on2 before" data-direction="w"><img src="../static/up.png"/></span>
+        <span></span>
+        <span class="on2 left" data-direction="a"><img src="../static/left.png"/></span>
+        <span></span>
+        <span class="on2 right" data-direction="d"><img src="../static/right.png"/></span>
+        <span></span>
+        <span class="on2 cabk" data-direction="s"><img src="../static/down.png"/></span>
+        <span></span>
+    </div>
+
+    <img class="xiaohui" src="../static/xiaohui.jpg">
+    <div class="xinxi">使用说明： <br> 刷新按钮刷新传感器数据，前W、后S、左A、右D<br> 控制小车行走。 <br> <br> <br> 此为哈尔滨师范大学计算机科学与信息工程学院毕业设计 <br>
+        开发者：曾锴 2015级物联网工程02<br>
+        email:&nbsp; kiceng@outlook.com <br> 2019.3.20 <br> 版&nbsp; 本： v 0.01
+    </div>
+
+</div>
+<!--<h3> MJRoBot Lab Live Streaming ==> <a href="/camera" class="button">LIVE</a></h3>-->
+
+
+</body>
+
+</html>
